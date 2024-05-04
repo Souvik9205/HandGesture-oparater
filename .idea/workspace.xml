@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8097ad73-553e-4912-b870-be1027d99e5e" name="Changes" comment="HandTracker Module commit 2">
-      <change afterPath="$PROJECT_DIR$/AutoCursor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HandtrackingModule.py" beforeDir="false" afterPath="$PROJECT_DIR$/HandtrackingModule.py" afterDir="false" />
-    </list>
+    <list default="true" id="8097ad73-553e-4912-b870-be1027d99e5e" name="Changes" comment="mouse-move , clicks, drag-drop" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -165,12 +161,21 @@
       <option name="project" value="LOCAL" />
       <updated>1714805323731</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="mouse-move , clicks, drag-drop">
+      <option name="closed" value="true" />
+      <created>1714852309347</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1714852309347</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="HandTracker Module commit" />
     <MESSAGE value="HandTracker Module commit 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="HandTracker Module commit 2" />
+    <MESSAGE value="mouse-move , clicks, drag-drop" />
+    <option name="LAST_COMMIT_MESSAGE" value="mouse-move , clicks, drag-drop" />
   </component>
 </project>
