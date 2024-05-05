@@ -11,6 +11,7 @@ pinch_threshold = 20
 pLocX, pLocY = 0, 0
 cLocX, cLocY = 0, 0
 scrollcLocY, scrollpLocY = 0, 0
+cLength01, pLength01 = 0, 0
 isHolding = False
 
 cap = cv2.VideoCapture(0)
@@ -75,29 +76,48 @@ while True:
             maxScroll = 201
             minScroll = 26
             scrollcLocY = y1
-            minMovement=2
+            minMovement = 2
             # SCROLL DOWN
-            
-            if scrollcLocY > scrollpLocY and (scrollcLocY-scrollpLocY)>minMovement:
+
+            if scrollcLocY > scrollpLocY and (scrollcLocY-scrollpLocY) > minMovement:
                 print(scrollcLocY-scrollpLocY)
                 scrollAmount = -(abs(-5*smoothening*(scrollcLocY-scrollpLocY)))
                 if scrollAmount != 0 and not scrollAmount > -minScroll:
                     if scrollAmount < -maxScroll:
                         scrollAmount = -maxScroll
                     pyautogui.scroll(scrollAmount)
-                    #print(scrollAmount)
-                        
+                    # print(scrollAmount)
+
             # SCROLL UP
-            elif scrollcLocY < scrollpLocY and (scrollpLocY-scrollcLocY)>minMovement:
+            elif scrollcLocY < scrollpLocY and (scrollpLocY-scrollcLocY) > minMovement:
                 print(scrollpLocY-scrollcLocY)
                 scrollAmount = abs(5*smoothening*(scrollpLocY-scrollcLocY))
                 if scrollAmount != 0 and not scrollAmount < minScroll:
                     if scrollAmount > maxScroll:
                         scrollAmount = maxScroll
                     pyautogui.scroll(scrollAmount)
-                    #print(scrollAmount)
-                    
+                    # print(scrollAmount)
+
             scrollpLocY = scrollcLocY
+
+        # [VOLUME CONTROL MODE]
+        if fingers[0] == 1 and fingers[1] == 1 and fingers[2] == 1 and fingers[3] == 0 and fingers[4] == 1:
+            cLength01 = length01
+            maxLength01 = 210
+            minLength01 = 50
+
+            if length01 > minLength01 and length01 < maxLength01:
+                # VOLUME UP
+                if cLength01 < pLength01:
+                    # pyautogui.hotkey('volumeup')
+                    pyautogui.hotkey('volumeup')
+                # VOLUME DOWN
+                elif cLength01 > pLength01:
+                    pyautogui.hotkey('volumedown')
+                    # pyautogui.hotkey('volumedown')
+            cv2.circle(img, (lineInfo1[4], lineInfo1[5]),
+                       6, (0, 255, 0), cv2.FILLED)
+            pLength01 = cLength01
 
         # [DRAG AND DROP MODE]
         if (
