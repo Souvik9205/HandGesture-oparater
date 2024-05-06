@@ -1,10 +1,9 @@
 import cv2
 import mediapipe as mp
 import math
-import numpy as np
 
 class handDetector():
-    def __init__(self, mode=False, maxHands=2):
+    def __init__(self, mode=False, maxHands=2,):
         self.mode = mode
         self.maxHands = maxHands
 

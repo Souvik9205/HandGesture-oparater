@@ -5,7 +5,7 @@ import pyautogui
 
 wCam, hCam = 640, 480
 frameR = 100
-smoothening = 5
+smoothening = 1.5
 pinch_threshold = 20
 
 pLocX, pLocY = 0, 0
@@ -15,10 +15,10 @@ cLength01, pLength01 = 0, 0
 isHolding = False
 
 cap = cv2.VideoCapture(0)
-cap.set(3, wCam)
-cap.set(4, hCam)
+cv2.namedWindow("Video", cv2.WINDOW_NORMAL)
 detector = htm.handDetector(maxHands=1)
 wScr, hScr = pyautogui.size()
+cv2.moveWindow("Video", wScr-wCam+18, hScr - hCam)
 
 while True:
     success, img = cap.read()
@@ -80,7 +80,6 @@ while True:
             # SCROLL DOWN
 
             if scrollcLocY > scrollpLocY and (scrollcLocY-scrollpLocY) > minMovement:
-                print(scrollcLocY-scrollpLocY)
                 scrollAmount = -(abs(-5*smoothening*(scrollcLocY-scrollpLocY)))
                 if scrollAmount != 0 and not scrollAmount > -minScroll:
                     if scrollAmount < -maxScroll:
@@ -90,7 +89,6 @@ while True:
 
             # SCROLL UP
             elif scrollcLocY < scrollpLocY and (scrollpLocY-scrollcLocY) > minMovement:
-                print(scrollpLocY-scrollcLocY)
                 scrollAmount = abs(5*smoothening*(scrollpLocY-scrollcLocY))
                 if scrollAmount != 0 and not scrollAmount < minScroll:
                     if scrollAmount > maxScroll:
@@ -129,13 +127,12 @@ while True:
             if (isHolding == False):
                 pyautogui.mouseDown(button='left')
                 isHolding = True
-                pyautogui.moveTo(x3, y3)
         else:
             if (isHolding == True):
                 pyautogui.mouseUp(button='left')
                 isHolding = False
 
-    cv2.imshow("image", img)
+    cv2.imshow("Video", img)
     key = cv2.waitKey(1)
     if key == 27:
         break
