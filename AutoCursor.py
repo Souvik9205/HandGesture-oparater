@@ -3,7 +3,7 @@ import numpy as np
 import HandtrackingModule as htm
 import pyautogui
 
-wCam, hCam = 640, 480
+wCam, hCam = 640, 480,
 frameR = 100
 smoothening = 1.5
 pinch_threshold = 20
@@ -16,9 +16,10 @@ isHolding = False
 
 cap = cv2.VideoCapture(0)
 cv2.namedWindow("Video", cv2.WINDOW_NORMAL)
+cv2.resizeWindow("Video", wCam, hCam)
 detector = htm.handDetector(maxHands=1)
 wScr, hScr = pyautogui.size()
-cv2.moveWindow("Video", wScr-wCam+18, hScr - hCam)
+cv2.moveWindow("Video", wScr-wCam, 0)
 
 while True:
     success, img = cap.read()
@@ -84,7 +85,7 @@ while True:
                 if scrollAmount != 0 and not scrollAmount > -minScroll:
                     if scrollAmount < -maxScroll:
                         scrollAmount = -maxScroll
-                    pyautogui.scroll(scrollAmount)
+                    pyautogui.scroll(int(scrollAmount))
                     # print(scrollAmount)
 
             # SCROLL UP
@@ -93,7 +94,7 @@ while True:
                 if scrollAmount != 0 and not scrollAmount < minScroll:
                     if scrollAmount > maxScroll:
                         scrollAmount = maxScroll
-                    pyautogui.scroll(scrollAmount)
+                    pyautogui.scroll(int(scrollAmount))
                     # print(scrollAmount)
 
             scrollpLocY = scrollcLocY
