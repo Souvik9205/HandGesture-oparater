@@ -10,6 +10,8 @@ pinch_threshold = 20
 
 pLocX, pLocY = 0, 0
 cLocX, cLocY = 0, 0
+scrollcLocY, scrollpLocY = 0, 0
+cLength01, pLength01 = 0, 0
 isHolding = False
 
 cap = cv2.VideoCapture(0)
@@ -34,10 +36,11 @@ while True:
         length03, img, lineInfo3 = detector.findDistance(4, 16, img)
         length04, img, lineInfo4 = detector.findDistance(4, 20, img)
 
-        print(length01, length02, length03, length04)
+        # print(length01, length02, length03, length04)
 
         fingers = detector.fingersUp()
-        cv2.rectangle(img, (frameR, frameR), (wCam - frameR, hCam - frameR), (0, 0, 255), 2)
+        cv2.rectangle(img, (frameR, frameR),
+                      (wCam - frameR, hCam - frameR), (0, 0, 255), 2)
 
     # GESTURES LISTS ARE HERE -------------------------------------
 
@@ -57,14 +60,64 @@ while True:
         # LEFT CLICK MODE HERE ---------------
         if fingers[1] == 1 and fingers[2] == 1 and fingers[0] == 0 and fingers[3] == 0 and fingers[4] == 0:
             if length12 < 25:
-                cv2.circle(img, (lineInfo[4], lineInfo[5]), 6, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, (lineInfo[4], lineInfo[5]),
+                           6, (0, 255, 0), cv2.FILLED)
                 pyautogui.click(button='left')
 
         # RIGHT CLICK MODE HERE ---------------
         if fingers[1] == 1 and fingers[2] == 1 and fingers[0] == 1 and fingers[3] == 0 and fingers[4] == 0:
             if length12 < 25:
-                cv2.circle(img, (lineInfo[4], lineInfo[5]), 6, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, (lineInfo[4], lineInfo[5]),
+                           6, (0, 255, 0), cv2.FILLED)
                 pyautogui.click(button='right')
+
+        # [SCROLL MODE]
+        if fingers[0] == 0 and fingers[1] == 1 and fingers[2] == 1 and fingers[3] == 0 and fingers[4] == 1:
+            maxScroll = 201
+            minScroll = 26
+            scrollcLocY = y1
+            minMovement = 2
+            # SCROLL DOWN
+
+            if scrollcLocY > scrollpLocY and (scrollcLocY-scrollpLocY) > minMovement:
+                print(scrollcLocY-scrollpLocY)
+                scrollAmount = -(abs(-5*smoothening*(scrollcLocY-scrollpLocY)))
+                if scrollAmount != 0 and not scrollAmount > -minScroll:
+                    if scrollAmount < -maxScroll:
+                        scrollAmount = -maxScroll
+                    pyautogui.scroll(scrollAmount)
+                    # print(scrollAmount)
+
+            # SCROLL UP
+            elif scrollcLocY < scrollpLocY and (scrollpLocY-scrollcLocY) > minMovement:
+                print(scrollpLocY-scrollcLocY)
+                scrollAmount = abs(5*smoothening*(scrollpLocY-scrollcLocY))
+                if scrollAmount != 0 and not scrollAmount < minScroll:
+                    if scrollAmount > maxScroll:
+                        scrollAmount = maxScroll
+                    pyautogui.scroll(scrollAmount)
+                    # print(scrollAmount)
+
+            scrollpLocY = scrollcLocY
+
+        # [VOLUME CONTROL MODE]
+        if fingers[0] == 1 and fingers[1] == 1 and fingers[2] == 1 and fingers[3] == 0 and fingers[4] == 1:
+            cLength01 = length01
+            maxLength01 = 210
+            minLength01 = 50
+
+            if length01 > minLength01 and length01 < maxLength01:
+                # VOLUME UP
+                if cLength01 < pLength01:
+                    # pyautogui.hotkey('volumeup')
+                    pyautogui.hotkey('volumeup')
+                # VOLUME DOWN
+                elif cLength01 > pLength01:
+                    pyautogui.hotkey('volumedown')
+                    # pyautogui.hotkey('volumedown')
+            cv2.circle(img, (lineInfo1[4], lineInfo1[5]),
+                       6, (0, 255, 0), cv2.FILLED)
+            pLength01 = cLength01
 
         # [DRAG AND DROP MODE]
         if (
@@ -73,15 +126,14 @@ while True:
             length03 < pinch_threshold and
             length04 < pinch_threshold
         ):
-            if(isHolding == False):
+            if (isHolding == False):
                 pyautogui.mouseDown(button='left')
                 isHolding = True
                 pyautogui.moveTo(x3, y3)
         else:
-            if(isHolding == True):
+            if (isHolding == True):
                 pyautogui.mouseUp(button='left')
                 isHolding = False
-
 
     cv2.imshow("image", img)
     key = cv2.waitKey(1)
