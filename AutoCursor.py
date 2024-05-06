@@ -13,7 +13,7 @@ cLocX, cLocY = 0, 0
 scrollcLocY, scrollpLocY = 0, 0
 cLength01, pLength01 = 0, 0
 isHolding = False
-
+pyautogui.FAILSAFE=False
 cap = cv2.VideoCapture(0)
 cv2.namedWindow("Video", cv2.WINDOW_NORMAL)
 cv2.resizeWindow("Video", wCam, hCam)
