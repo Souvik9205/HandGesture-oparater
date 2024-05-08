@@ -2,4 +2,4 @@ opencv-python
 numpy
 mediapipe
 pyautogui
-pynput
+winsound
