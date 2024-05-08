@@ -6,7 +6,7 @@ import winsound
 
 wCam, hCam = 640, 480,
 frameR = 100
-smoothening = 3
+smoothening = 2
 pinch_threshold = 20
 
 pLocX, pLocY = 0, 0
@@ -25,7 +25,6 @@ cv2.moveWindow("Video", wScr-wCam, 0)
 def play(file):
     winsound.PlaySound(file,winsound.SND_FILENAME | winsound.SND_ASYNC)
 
-beepTimeout=1
 while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
@@ -135,22 +134,22 @@ while True:
                        6, (0, 255, 0), cv2.FILLED)
             pLength01 = cLength01
 
-        # [DRAG AND DROP MODE]
-        if (
-            length01 < pinch_threshold and
-            length02 < pinch_threshold and
-            length03 < pinch_threshold and
-            length04 < pinch_threshold
-        ):
-            cv2.putText(img, "DRAG & DROP MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 6)
-            cv2.putText(img, "DRAG & DROP MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,255,0), 3)
-            if (isHolding == False):
-                pyautogui.mouseDown(button='left')
-                isHolding = True
-        else:
-            if (isHolding == True):
-                pyautogui.mouseUp(button='left')
-                isHolding = False
+        # # [DRAG AND DROP MODE]
+        # if (
+        #     length01 < pinch_threshold and
+        #     length02 < pinch_threshold and
+        #     length03 < pinch_threshold and
+        #     length04 < pinch_threshold
+        # ):
+        #     cv2.putText(img, "DRAG & DROP MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 6)
+        #     cv2.putText(img, "DRAG & DROP MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,255,0), 3)
+        #     if (isHolding == False):
+        #         pyautogui.mouseDown(button='left')
+        #         isHolding = True
+        # else:
+        #     if (isHolding == True):
+        #         pyautogui.mouseUp(button='left')
+        #         isHolding = False
 
     cv2.imshow("Video", img)
     cv2.setWindowProperty('Video', cv2.WND_PROP_TOPMOST, 1)
