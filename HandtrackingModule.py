@@ -3,12 +3,15 @@ import mediapipe as mp
 import math
 
 class handDetector():
-    def __init__(self, mode=False, maxHands=2,):
+    def __init__(self, mode=False, maxHands=2,complexity=1,minDetectCon=0.5,minTrackCon=0.5):
         self.mode = mode
         self.maxHands = maxHands
+        self.complexity=complexity
+        self.minDetectCon=minDetectCon
+        self.minTrackCon=minTrackCon
 
         self.mpHands = mp.solutions.hands
-        self.hands = self.mpHands.Hands(self.mode, self.maxHands)
+        self.hands = self.mpHands.Hands(self.mode, self.maxHands,self.complexity,self.minDetectCon,self.minTrackCon)
         self.mpDraw = mp.solutions.drawing_utils
         self.tipIds = [4, 8, 12, 16, 20]
 
