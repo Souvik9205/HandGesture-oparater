@@ -1,4 +1,4 @@
-import cv2
+import cv2,os
 import numpy as np
 import HandtrackingModule as htm
 import pyautogui
@@ -6,7 +6,7 @@ import winsound
 
 wCam, hCam = 640, 480,
 frameR = 100
-smoothening = 2
+smoothening = 3
 pinch_threshold = 20
 
 pLocX, pLocY = 0, 0
@@ -21,6 +21,7 @@ cv2.resizeWindow("Video", wCam, hCam)
 detector = htm.handDetector(maxHands=1)
 wScr, hScr = pyautogui.size()
 cv2.moveWindow("Video", wScr-wCam, 0)
+kbEnabled=False
 
 def play(file):
     winsound.PlaySound(file,winsound.SND_FILENAME | winsound.SND_ASYNC)
@@ -133,7 +134,20 @@ while True:
             cv2.circle(img, (lineInfo1[4], lineInfo1[5]),
                        6, (0, 255, 0), cv2.FILLED)
             pLength01 = cLength01
+        
+        # [KEYBOARD MODE]
+        # Keyboard on
+        if fingers[0] == 0 and fingers[1] == 1 and fingers[2] == 1 and fingers[3] == 1 and fingers[4] == 1:
+            if not kbEnabled:
+                os.system('start FreeVK.exe')
+                kbEnabled= not kbEnabled
 
+        # Keyboard off
+        if fingers[0] == 1 and fingers[1] == 0 and fingers[2] == 0 and fingers[3] == 0 and fingers[4] == 1:
+            if kbEnabled:
+                os.system('taskkill /f /im FreeVK.exe')
+                kbEnabled=not kbEnabled
+            
         # # [DRAG AND DROP MODE]
         # if (
         #     length01 < pinch_threshold and
