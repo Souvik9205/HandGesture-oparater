@@ -33,9 +33,9 @@ to the program simply open your terminal and run the AutoCursor.py file
 
 pres the ESC key in your keyboard
 
-# Installing Guide :
+# Installing Guide:
 
-1 `git clone <GitHub repo Link>` to clone all the files
-2 `pip install -r requirements.txt` to install all the packages
-3 `python AutoCursor.py` to run the main python file
-4 enjoy :)
+- `git clone <GitHub repo Link>` to clone all the files
+- `pip install -r requirements.txt` to install all the packages
+- `python AutoCursor.py` to run the main Python file
+- Enjoy :)
