@@ -2,10 +2,11 @@ import cv2
 import numpy as np
 import HandtrackingModule as htm
 import pyautogui
+import winsound
 
 wCam, hCam = 640, 480,
 frameR = 100
-smoothening = 1.5
+smoothening = 3
 pinch_threshold = 20
 
 pLocX, pLocY = 0, 0
@@ -21,6 +22,10 @@ detector = htm.handDetector(maxHands=1)
 wScr, hScr = pyautogui.size()
 cv2.moveWindow("Video", wScr-wCam, 0)
 
+def play(file):
+    winsound.PlaySound(file,winsound.SND_FILENAME | winsound.SND_ASYNC)
+
+beepTimeout=1
 while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
@@ -47,6 +52,8 @@ while True:
 
         # [CURSOR MODE]
         if fingers[1] == 1 and fingers[2] == 0 and fingers[3] == 0 and fingers[4] == 0 and fingers[0] == 0:
+            cv2.putText(img, "CURSOR MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 6)
+            cv2.putText(img, "CURSOR MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,255,0), 3)
             x3 = np.interp(x1, (frameR, wCam - frameR), (0, wScr))
             y3 = np.interp(y1, (frameR, hCam - frameR), (0, hScr))
 
@@ -60,20 +67,28 @@ while True:
         # [CLICK MODES]
         # LEFT CLICK MODE HERE ---------------
         if fingers[1] == 1 and fingers[2] == 1 and fingers[0] == 0 and fingers[3] == 0 and fingers[4] == 0:
+            cv2.putText(img, "LEFT CLICK MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 6)
+            cv2.putText(img, "LEFT CLICK MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,255,0), 3)
             if length12 < 25:
                 cv2.circle(img, (lineInfo[4], lineInfo[5]),
                            6, (0, 255, 0), cv2.FILLED)
+                play("beep_left.wav")
                 pyautogui.click(button='left')
 
         # RIGHT CLICK MODE HERE ---------------
         if fingers[1] == 1 and fingers[2] == 1 and fingers[0] == 1 and fingers[3] == 0 and fingers[4] == 0:
+            cv2.putText(img, "RIGHT CLICK MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 6)
+            cv2.putText(img, "RIGHT CLICK MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,255,0), 3)
             if length12 < 25:
                 cv2.circle(img, (lineInfo[4], lineInfo[5]),
                            6, (0, 255, 0), cv2.FILLED)
+                play("beep_right.wav")
                 pyautogui.click(button='right')
 
         # [SCROLL MODE]
         if fingers[0] == 0 and fingers[1] == 1 and fingers[2] == 1 and fingers[3] == 0 and fingers[4] == 1:
+            cv2.putText(img, "SCROLL MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 6)
+            cv2.putText(img, "SCROLL MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,255,0), 3)
             maxScroll = 201
             minScroll = 26
             scrollcLocY = y1
@@ -101,6 +116,8 @@ while True:
 
         # [VOLUME CONTROL MODE]
         if fingers[0] == 1 and fingers[1] == 1 and fingers[2] == 1 and fingers[3] == 0 and fingers[4] == 1:
+            cv2.putText(img, "VOLUME CONTROL MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 6)
+            cv2.putText(img, "VOLUME CONTROL MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,255,0), 3)
             cLength01 = length01
             maxLength01 = 210
             minLength01 = 50
@@ -109,10 +126,10 @@ while True:
                 # VOLUME UP
                 if cLength01 < pLength01:
                     # pyautogui.hotkey('volumeup')
-                    pyautogui.hotkey('volumeup')
+                    pyautogui.hotkey('volumedown')
                 # VOLUME DOWN
                 elif cLength01 > pLength01:
-                    pyautogui.hotkey('volumedown')
+                    pyautogui.hotkey('volumeup')
                     # pyautogui.hotkey('volumedown')
             cv2.circle(img, (lineInfo1[4], lineInfo1[5]),
                        6, (0, 255, 0), cv2.FILLED)
@@ -125,6 +142,8 @@ while True:
             length03 < pinch_threshold and
             length04 < pinch_threshold
         ):
+            cv2.putText(img, "DRAG & DROP MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,0), 6)
+            cv2.putText(img, "DRAG & DROP MODE", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,255,0), 3)
             if (isHolding == False):
                 pyautogui.mouseDown(button='left')
                 isHolding = True
@@ -134,6 +153,7 @@ while True:
                 isHolding = False
 
     cv2.imshow("Video", img)
+    cv2.setWindowProperty('Video', cv2.WND_PROP_TOPMOST, 1)
     key = cv2.waitKey(1)
     if key == 27:
         break
